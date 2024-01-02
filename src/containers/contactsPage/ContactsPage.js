@@ -4,42 +4,44 @@ import { ContactForm } from "../../components/contactForm/ContactForm";
 import { TileList } from "../../components/tileList/TileList";
 
 export const ContactsPage = ({ contacts, addContact }) => {
-  /*
-  Define state variables for 
-  contact info and duplicate check
-  */
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [contactOk, setContactOk] = useState(false);
+  const [duplicate, setDuplicate] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    /*
-    Add contact info and clear data
-    if the contact name is not a duplicate
-    */
-    if ((contacts.find((contact) => contact.name === name) && contacts.length > 0)) {
-      setContactOk(false);
-    }
-    else {
-      setContactOk(true);
+    if (!duplicate) {
       addContact(name, phone, email);
       setName("");
       setPhone("");
       setEmail("");
-    } 
+    }
   };
-  /*
-  Using hooks, check for contact name in the 
-  contacts array variable in props
-  */
+
+  useEffect(() => {
+    const nameIsDuplicate = () => {
+      const found = contacts.find((contact) => contact.name === name);
+      if (found !== undefined) {
+        return true;
+      }
+      return false;
+    };
+
+    if (nameIsDuplicate()) {
+      setDuplicate(true);
+    } else {
+      setDuplicate(false);
+    }
+  }, [name, contacts, duplicate]);
 
   return (
-    <div>
+    <>
       <section>
-        <h2>Add Contact</h2>
-        <p>{contactOk? "" : "Contact already exists !"}</p>
+        <h2>
+          Add Contact
+          {duplicate ? " - Name Already Exists" : ""}
+        </h2>
         <ContactForm
           name={name}
           setName={setName}
@@ -53,8 +55,8 @@ export const ContactsPage = ({ contacts, addContact }) => {
       <hr />
       <section>
         <h2>Contacts</h2>
-        <TileList contacts={contacts} />
+        <TileList tiles={contacts} />
       </section>
-    </div>
+    </>
   );
 };
