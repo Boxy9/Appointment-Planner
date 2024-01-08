@@ -3,8 +3,8 @@ import React, { useMemo } from "react";
 import { ContactPicker } from "../contactPicker/ContactPicker";
 
 const getTodayString = () => {
-  const [month, day, year] = new Date()
-    .toLocaleDateString("en-US")
+  const [day, month, year] = new Date()
+    .toLocaleDateString("en-GB")
     .split("/");
   return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
 };
@@ -72,7 +72,7 @@ export const AppointmentForm = ({
         />
       </label>
       <br />
-      <input aria-label="Add Appointment" type="submit" value="Add Appointment" />
+      <button aria-label="Add Appointment" type="submit" value="Add Appointment">Add Appointment</button>
     </form>
   );
 };

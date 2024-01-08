@@ -49,7 +49,7 @@ export const ContactForm = ({
         />
       </label>
       <br />
-      <input type="submit" value="Add Contact" aria-label="Add Contact"/>
+      <button type="submit" value="Add Contact" aria-label="Add Contact">Add Contact</button>
     </form>
   );
 };
