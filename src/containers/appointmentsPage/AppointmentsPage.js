@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { AppointmentForm } from "../../components/appointmentForm/AppointmentForm";
 import { TileList } from "../../components/tileList/TileList";
@@ -12,20 +12,35 @@ export const AppointmentsPage = ({
   const [contact, setContact] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [overlap, setOverlap] = useState(false);
+
+  useEffect(() => {
+    const found = appointments.find((appointment) => appointment.date === date && appointment.time === time);
+    if (found !== undefined) {
+      setOverlap(true);
+    }
+    else {
+      setOverlap(false);
+    };
+  }, [date, time, appointments, overlap]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addAppointment(name, contact, date, time);
-    setName("");
-    setContact("");
-    setDate("");
-    setTime("");
+    if (!overlap) {
+      addAppointment(name, contact, date, time);
+      setName("");
+      setContact("");
+      setDate("");
+      setTime("");
+    };
   };
 
   return (
     <>
       <section>
-        <h2>Add Appointment</h2>
+        <h2>Add Appointment
+          {overlap ? " - Appointment overlaps" : ""}
+        </h2>
         <AppointmentForm
           contacts={contacts}
           name={name}

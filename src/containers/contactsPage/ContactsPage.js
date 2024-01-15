@@ -20,19 +20,13 @@ export const ContactsPage = ({ contacts, addContact }) => {
   };
 
   useEffect(() => {
-    const nameIsDuplicate = () => {
-      const found = contacts.find((contact) => contact.name === name);
-      if (found !== undefined) {
-        return true;
-      }
-      return false;
-    };
-
-    if (nameIsDuplicate()) {
+    const found = contacts.find((contact) => contact.name === name);
+    if (found !== undefined) {
       setDuplicate(true);
-    } else {
-      setDuplicate(false);
     }
+    else {
+      setDuplicate(false);
+    };
   }, [name, contacts, duplicate]);
 
   return (
